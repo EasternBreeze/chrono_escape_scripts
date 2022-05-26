@@ -1,6 +1,5 @@
 using ChangeableDatabase;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +18,7 @@ public sealed class ExtraRecord : MonoBehaviour
 
     private static readonly List<string> tableDifficultyType = new List<string>()
     {
-        "basic", "normal", "expert", "overdrive"
+        "basic", "normal", "expert", "overdrive", "blackout"
     };
     private static readonly List<string> sDifficultyPattern1 = new List<string>()
     {
@@ -59,10 +58,11 @@ public sealed class ExtraRecord : MonoBehaviour
             g.transform.SetParent(parent);
             RectTransform r = g.GetComponent<RectTransform>();
 
-            r.position = new Vector2()
+            r.position = new Vector3()
             {
                 x = -120 + 170 * (i / 5),
-                y = 75 - 80 * (i % 5)
+                y = 75 - 80 * (i % 5),
+                z = 0
             };
 
             tRanks.Add(g.GetComponent<Text>());
@@ -102,35 +102,20 @@ public sealed class ExtraRecord : MonoBehaviour
 
             iDifficulty.ForEach(s => s.gameObject.SetActive(false));
             tRanks.ForEach(s => s.gameObject.SetActive(false));
-
-            if (list[15] != -1)
+            for (int i = 0; i < Enum.GetValues(typeof(DifficultyType)).Length; i++)
             {
-                for (int i = 0; i < sDifficultyPattern2.Count; i++)
+                iDifficulty[i].sprite = spritesDifficulty[i];
+                if (i <= 2 || list[i * 5] != -1)
                 {
-                    iDifficulty[i].sprite = spritesDifficulty[i];
                     iDifficulty[i].gameObject.SetActive(true);
-                    for (int j = 0; j < 5; j++)
-                    {
-                        tRanks[i * 5 + j].text = list[i * 5 + j] != -1 ? $"{list[i * 5 + j]}" : "---";
-                        tRanks[i * 5 + j].gameObject.SetActive(true);
-                    }
+                }
+
+                for (int j = 0; j < 5; j++)
+                {
+                    tRanks[i * 5 + j].text = list[i * 5 + j] != -1 ? $"{list[i * 5 + j]}" : "---";
+                    tRanks[i * 5 + j].gameObject.SetActive(true);
                 }
             }
-            else
-            {
-                for (int i = 0; i < sDifficultyPattern1.Count; i++)
-                {
-                    iDifficulty[i].sprite = spritesDifficulty[i];
-                    iDifficulty[i].gameObject.SetActive(true);
-                    for (int j = 0; j < 5; j++)
-                    {
-                        tRanks[i * 5 + j].text = list[i * 5 + j] != -1 ? $"{list[i * 5 + j]}" : "---";
-                        tRanks[i * 5 + j].gameObject.SetActive(true);
-                    }
-                }
-            }
-
-
         }
     }
 }

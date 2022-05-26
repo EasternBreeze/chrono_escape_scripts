@@ -1,7 +1,5 @@
 using ChangeableDatabase;
 using Cysharp.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UserDatabase;
 
@@ -37,7 +35,8 @@ public sealed class ResultAdmin : MonoBehaviour
         Sound.Instance.Stop();
         blocker.SetActive(true);
 
-        if (UDB.DifficultyData.difficulty_type == DifficultyType.OVERDRIVE)
+        if (UDB.DifficultyData.difficulty_type == DifficultyType.OVERDRIVE ||
+                UDB.DifficultyData.difficulty_type == DifficultyType.BLACKOUT)
         {
             Sound.Instance.Play(SE.DesideOD);
             SceneChanger.Instance.SceneChange(Scene.GameScene, FadeType.OverDrive);

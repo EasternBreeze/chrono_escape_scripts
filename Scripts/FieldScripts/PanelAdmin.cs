@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,11 +20,9 @@ public sealed class PanelAdmin : MonoBehaviour
         cursor = Instantiate(Resources.Load<GameObject>("Prefabs/Cursor")).GetComponent<Cursor>();
 
         panelSize = 600 / (row > col ? row : col);
-        Debug.Log(panelSize + " " + row + col);
         panelRow = row;
         panelCol = col;
 
-        // パネル設置+リスト追加
         panelPosOrigin = new Vector2
         {
             x = -1.0f * panelSize * (col - 1) / 2.0f,
@@ -50,7 +47,6 @@ public sealed class PanelAdmin : MonoBehaviour
             }
         }
 
-        // cursorLimitMin/Max設定
         fieldSize = new Vector2
         {
             x = panelSize * col,
@@ -87,7 +83,6 @@ public sealed class PanelAdmin : MonoBehaviour
 
     public void FieldUpdate()
     {
-        // 無敵時間内であればreturn
         if (cursor.GetIsInvincible())
         {
             return;

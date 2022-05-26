@@ -1,5 +1,3 @@
-using ChangeableDatabase;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UserDatabase;
@@ -19,16 +17,16 @@ public sealed class FieldAdmin : MonoBehaviour
     private int speedLevel; // 現在のスピードレベル
     private int minSpeedLevel; // 初期スピードレベル(const)
     private int maxSpeedLevel; // 最大スピードレベル(const)
-    private int limitOver;
+    private int limitOver; // 過剰レベル
     private float nextSpeedupSeconds; // スピードアップまでの設定値(sec)
-    private float addSpeedupSeconds;
+    private float addSpeedupSeconds; // スピードアップまでの設定値増加分(sec)
     private float countDownSeconds; // カウントダウンまでの設定値(sec)
 
     private float nextSpeedupWait; // 次スピードアップまで(sec)
     private float countDownWait; // 次カウントダウンまで(sec)
     private bool isSpeedup; // 次カウントダウンにてスピードアップ予約フラグ
     private bool isMaxSpeedLevel; // 最大レベルであるか
-    private bool isFullLevelup;
+    private bool isFullLevelup; // 過剰レベルも超えているか
 
     public class FieldInfo
     {
@@ -88,7 +86,7 @@ public sealed class FieldAdmin : MonoBehaviour
 
         nextSpeedupWait = nextSpeedupSeconds;
 
-        cursor = panels.SetField(difficulty.panel_row, difficulty.panel_col); // 200 3 3
+        cursor = panels.SetField(difficulty.panel_row, difficulty.panel_col);
         Panel.SetCountLimit(difficulty.panel_count_lower_limit, difficulty.panel_count_upper_limit);
 
         canvas.Init(new FieldInfo(this));
@@ -167,5 +165,3 @@ public sealed class FieldAdmin : MonoBehaviour
     }
 
 }
-
-

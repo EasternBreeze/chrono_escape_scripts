@@ -1,6 +1,5 @@
 using ChangeableDatabase;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UserDatabase.JDifficultyDataList;
@@ -13,7 +12,7 @@ namespace UserDatabase
     }
     public enum DifficultyType
     {
-        BASIC, NORMAL, EXPERT, OVERDRIVE
+        BASIC, NORMAL, EXPERT, OVERDRIVE, BLACKOUT
     }
 
     /** ******************************
@@ -37,7 +36,8 @@ namespace UserDatabase
             Resources.Load<Sprite>("Graphics/text_DifficultyBasic"),
             Resources.Load<Sprite>("Graphics/text_DifficultyNormal"),
             Resources.Load<Sprite>("Graphics/text_DifficultyExpert"),
-            Resources.Load<Sprite>("Graphics/text_DifficultyOverDrive")
+            Resources.Load<Sprite>("Graphics/text_DifficultyOverDrive"),
+            Resources.Load<Sprite>("Graphics/text_DifficultyBlackOut")
         };
 
         public static List<float> SpeedTable

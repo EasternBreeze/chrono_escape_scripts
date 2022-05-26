@@ -1,6 +1,4 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UserDatabase;
 
@@ -67,7 +65,6 @@ public sealed class BackGround : MonoBehaviour
         {
             return;
         }
-
     }
 
     private async void GameScene()
@@ -75,6 +72,10 @@ public sealed class BackGround : MonoBehaviour
         if (UDB.DifficultyData.difficulty_type == DifficultyType.OVERDRIVE)
         {
             GetComponentInChildren<SpriteRenderer>().color = new Color(1.0f, 0.33f, 0.66f);
+        }
+        else if (UDB.DifficultyData.difficulty_type == DifficultyType.BLACKOUT)
+        {
+            GetComponentInChildren<SpriteRenderer>().color = new Color(0.33f, 0.33f, 0.33f);
         }
 
         Sprite squDot = Resources.Load<Sprite>("Graphics/particle_SquareDot");

@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UserDatabase;
-using static UserDatabase.JDifficultyDataList;
-using static FieldAdmin;
 using static ChangeableDatabase.RecordDataBase.JRecordDataList;
+using static FieldAdmin;
+using static UserDatabase.JDifficultyDataList;
 
 namespace ChangeableDatabase
 {
@@ -25,7 +24,6 @@ namespace ChangeableDatabase
             {
                 if (value >= UDB.DifficultyCount || value < 0)
                 {
-                    Debug.LogError($"DifficultyIndexOver {value} (max:{UDB.DifficultyCount - 1})");
                     return;
                 }
                 difficulty = value;
@@ -75,7 +73,7 @@ namespace ChangeableDatabase
         {
             try
             {
-                using (var sr = new StreamReader($"{Application.dataPath}/SystemSettings.json"))
+                using (var sr = new StreamReader($"{Application.persistentDataPath}/SystemSettings.json"))
                 {
                     settings = JsonUtility.FromJson<JSystemSettings>(sr.ReadToEnd());
                 }
@@ -103,7 +101,7 @@ namespace ChangeableDatabase
                 return;
             }
 
-            using (var sw = new StreamWriter($"{Application.dataPath}/SystemSettings.json"))
+            using (var sw = new StreamWriter($"{Application.persistentDataPath}/SystemSettings.json"))
             {
                 sw.Write(JsonUtility.ToJson(settings, true));
             }
@@ -142,7 +140,7 @@ namespace ChangeableDatabase
         {
             try
             {
-                using (var sr = new StreamReader($"{Application.dataPath}/RecordData.json"))
+                using (var sr = new StreamReader($"{Application.persistentDataPath}/RecordData.json"))
                 {
                     recordData = JsonUtility.FromJson<JRecordDataList>(sr.ReadToEnd());
                 }
@@ -179,7 +177,7 @@ namespace ChangeableDatabase
                 r.parity = r.GetParity();
             }
 
-            using (var sw = new StreamWriter($"{Application.dataPath}/RecordData.json"))
+            using (var sw = new StreamWriter($"{Application.persistentDataPath}/RecordData.json"))
             {
                 sw.Write(JsonUtility.ToJson(recordData, true));
             }
@@ -294,7 +292,7 @@ namespace ChangeableDatabase
                     int s = name.ToCharArray()[0] * name.ToCharArray()[name.Length - 1];
                     foreach (int n in records)
                     {
-                        p = p * s * n * n * 73;
+                        p ^= (s + n + 73);
                     }
                     return p;
                 }
@@ -329,7 +327,7 @@ namespace ChangeableDatabase
         {
             try
             {
-                using (var sr = new StreamReader($"{Application.dataPath}/ArchiveData.json"))
+                using (var sr = new StreamReader($"{Application.persistentDataPath}/ArchiveData.json"))
                 {
                     archiveData = JsonUtility.FromJson<JArchiveData>(sr.ReadToEnd());
                     if (archiveData.parity != archiveData.GetParity())
@@ -360,7 +358,7 @@ namespace ChangeableDatabase
 
             archiveData.parity = archiveData.GetParity();
 
-            using (var sw = new StreamWriter($"{Application.dataPath}/ArchiveData.json"))
+            using (var sw = new StreamWriter($"{Application.persistentDataPath}/ArchiveData.json"))
             {
                 sw.Write(JsonUtility.ToJson(archiveData, true));
             }
@@ -407,8 +405,8 @@ namespace ChangeableDatabase
 
             internal int GetParity()
             {
-                int p = (total_playtime_sec + 11) * (total_count + 13) * //
-                    (best_playtime_sec + 17) * (best_count + 19) * (best_level + 23);
+                int p = (total_playtime_sec + 11) ^ (total_count + 13) * //
+                    (best_playtime_sec + 17) ^ (best_count + 19) ^ (best_level + 23);
                 return p;
             }
         }

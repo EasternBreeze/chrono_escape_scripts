@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
@@ -26,14 +24,22 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
         }
     }
 
-    protected abstract void Awake();
+    private void Awake()
+    {
+        if (CheckInstance())
+        {
+            Init();
+        }
+    }
 
-    protected bool CheckInstance()
+    protected abstract void Init();
+
+    private bool CheckInstance()
     {
         if (instance == null)
         {
             instance = this as T;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(this);
             Debug.Log($"Instance :{instance}");
             return true;
         }

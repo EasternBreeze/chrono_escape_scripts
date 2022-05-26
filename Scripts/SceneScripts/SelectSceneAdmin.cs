@@ -1,6 +1,5 @@
 using ChangeableDatabase;
 using Cysharp.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,28 +54,23 @@ public sealed class SelectSceneAdmin : MonoBehaviour
             }
         }
         Sound.Instance.Play(SE.SelectMain);
+        isSelected = false;
+        startButton.GetComponent<Image>().color = new Color(0.32f, 0.45f, 0.45f, 1.0f);
+        startButton.GetComponentsInChildren<Image>()[1].color = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+
+        CDB.Difficulty = tab * 3;
+        cRecord.HiddenRecordData();
+
+        iPanelType.sprite = UDB.GetSpritePanelType(UDB.DifficultyData.panel_type);
+        iPanelType.enabled = true;
+        iDifficulty.enabled = false;
+
         lastTab = tab;
     }
 
     public void ChangeDifficulty(int difficulty)
     {
         Sound.Instance.Play(SE.SelectSub);
-
-#if UNITY_EDITOR
-        if (CDB.Difficulty == difficulty)
-        {
-            CDB.Difficulty = (int)UDB.DifficultyData.panel_type + 9;
-            cRecord.LoadRecordData(UDB.DifficultyData.name);
-
-            iPanelType.sprite = UDB.GetSpritePanelType(UDB.DifficultyData.panel_type);
-            iDifficulty.sprite = UDB.GetSpriteDifficulty(UDB.DifficultyData.difficulty_type);
-            iPanelType.enabled = true;
-            iDifficulty.enabled = true;
-
-            isSelected = true;
-            return;
-        }
-#endif
 
         CDB.Difficulty = difficulty;
         cRecord.LoadRecordData(UDB.DifficultyData.name);
@@ -105,11 +99,20 @@ public sealed class SelectSceneAdmin : MonoBehaviour
         {
             CDB.Difficulty = (int)UDB.DifficultyData.panel_type + 9;
         }
+        else if (Input.GetKey(KeyCode.Alpha7) && Input.GetKey(KeyCode.Alpha3))
+        {
+            CDB.Difficulty = (int)UDB.DifficultyData.panel_type + 12;
+        }
 
-        if (UDB.DifficultyData.difficulty_type == DifficultyType.OVERDRIVE)
+        if (UDB.DifficultyData.difficulty_type == DifficultyType.OVERDRIVE ||
+                UDB.DifficultyData.difficulty_type == DifficultyType.BLACKOUT)
         {
             Sound.Instance.Play(SE.DesideOD);
-            if (Input.GetKey(KeyCode.E) && Input.GetKey(KeyCode.B)) // TODO:テスト版のみ演出省略
+            if (Input.GetKey(KeyCode.E) && Input.GetKey(KeyCode.B))
+            {
+                SceneChanger.Instance.SceneChange(Scene.GameScene, FadeType.OverDrive);
+            }
+            else if (Input.GetKey(KeyCode.Alpha7) && Input.GetKey(KeyCode.Alpha3))
             {
                 SceneChanger.Instance.SceneChange(Scene.GameScene, FadeType.OverDrive);
             }

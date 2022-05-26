@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,7 +29,6 @@ public sealed class Cursor : MonoBehaviour
         sNoise = Resources.LoadAll<Sprite>("Graphics/cursor_Noise").ToList();
     }
 
-    // x1280 y720 200 200 200
     public float GetInvincibleSeconds() { return invincibleSeconds; }
     public int GetLife() { return life; }
     public bool GetIsInvincible() { return isInvincible; }
@@ -100,6 +98,7 @@ public sealed class Cursor : MonoBehaviour
     private void CursorPositionUpdate()
     {
         Vector2 pos = Input.mousePosition;
+        pos *= 1.0f * 1280 / Screen.width;
         pos -= positionAdjust;
         pos.x = Mathf.Clamp(pos.x, cursorLowerLimit.x, cursorUpperLimit.x);
         pos.y = Mathf.Clamp(pos.y, cursorLowerLimit.y, cursorUpperLimit.y);

@@ -1,7 +1,6 @@
 using ChangeableDatabase;
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Sound.JFieldBGMList;
@@ -23,7 +22,7 @@ public enum SE
     SelectMain,
     SelectSub,
     Deside,
-    Ready, // 3ƒJƒEƒ“ƒg
+    Ready,
     Go,
     CountDown,
     Speedup,
@@ -41,24 +40,20 @@ public sealed class Sound : SingletonMonoBehaviour<Sound>
     [SerializeField, EnumIndex(typeof(SE))] private List<SEData> seList;
 
     private BGMAudio audioBGM = new BGMAudio();
-    private BGMAudio audioBGMsub;
     private AudioSource audioSE;
 
     private int fieldBGMCount;
 
-    protected override void Awake()
+    protected override void Init()
     {
-        if (CheckInstance())
-        {
-            audioBGM.audio = gameObject.AddComponent<AudioSource>();
-            audioSE = gameObject.AddComponent<AudioSource>();
+        audioBGM.audio = gameObject.AddComponent<AudioSource>();
+        audioSE = gameObject.AddComponent<AudioSource>();
 
-            List<FieldBGM> list = JsonUtility.FromJson<JFieldBGMList>(Resources.Load("System/FieldBGMList").ToString()).recordsList;
-            fieldBGMCount = list.Count;
-            foreach (FieldBGM f in list)
-            {
-                bgmList.Add(new BGMData(f));
-            }
+        List<FieldBGM> list = JsonUtility.FromJson<JFieldBGMList>(Resources.Load("System/FieldBGMList").ToString()).recordsList;
+        fieldBGMCount = list.Count;
+        foreach (FieldBGM f in list)
+        {
+            bgmList.Add(new BGMData(f));
         }
     }
 
@@ -69,15 +64,11 @@ public sealed class Sound : SingletonMonoBehaviour<Sound>
 
     public void Play(BGM bgm)
     {
-        Debug.Log($"BGM {bgm}");
-
         audioBGM.Play(bgmList[(int)bgm]);
     }
 
     public void Play(SE se)
     {
-        Debug.Log($"SE {se}");
-
         float v = se == SE.CountDown ? SystemSettings.VolumeCountDown : SystemSettings.VolumeSE;
         audioSE.PlayOneShot(seList[(int)se].clip, seList[(int)se].volume * v / 100.0f);
     }
@@ -219,11 +210,9 @@ public sealed class Sound : SingletonMonoBehaviour<Sound>
         {
             while (isPlaying)
             {
-                //  Debug.Log($"{audio.time} {now.loopEnd}");
                 if (audio.time >= np.loopEnd)
                 {
                     audio.time = np.loopStart;
-                    Debug.Log($"{audio.time} {np.loopEnd}");
                 }
                 await UniTask.Delay(10);
             }

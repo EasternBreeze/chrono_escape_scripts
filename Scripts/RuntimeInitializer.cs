@@ -1,5 +1,4 @@
 using ChangeableDatabase;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +12,7 @@ namespace Initialize
         {
             Debug.Log("Startup...");
             Application.targetFrameRate = 60;
+            Screen.SetResolution(1280, 720, false, 60);
             SystemSettings.Load();
             RecordDataBase.Load();
             ArchiveDataBase.Load();

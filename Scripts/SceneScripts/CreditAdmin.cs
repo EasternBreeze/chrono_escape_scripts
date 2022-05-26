@@ -1,11 +1,9 @@
 using ChangeableDatabase;
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 public sealed class CreditAdmin : MonoBehaviour
 {
@@ -23,7 +21,7 @@ public sealed class CreditAdmin : MonoBehaviour
 
         creditTexts = JsonUtility.FromJson<JCreditTexts>(Resources.Load("System/CreditTexts").ToString()).texts;
 
-        SecretCodes();
+        creditTexts.Add($"{SecretCode1()}{SecretCode2()}");
         Refresh();
 
         SceneChanger.Instance.FadeOut();
@@ -51,7 +49,7 @@ public sealed class CreditAdmin : MonoBehaviour
         SceneChanger.Instance.SceneChange(Scene.ExtraScene);
     }
 
-    private void SecretCodes()
+    private string SecretCode1()
     {
         string code = "\n";
         {
@@ -77,7 +75,36 @@ public sealed class CreditAdmin : MonoBehaviour
                 code += $"-Lv.1 UNLOCK = {pass}/25-\n";
             }
         }
-        creditTexts.Add(code);
+        return code;
+    }
+
+    private string SecretCode2()
+    {
+        string code = "\n";
+        {
+            code += "= SECRET CODE #2:BO =\n";
+
+            int pass = ArchiveDataBase.ArchiveData.best_playtime_sec;
+            if (pass >= 600)
+            {
+                code += "-7- + -3- + -START-\n";
+            }
+            else if (pass >= 420)
+            {
+                code += "-RUBY- + -AQUA- + -START-\n";
+                code += $"-Lv.3 UNLOCK = {pass / 60}:{pass % 60}/10:00-\n";
+            }
+            else if (pass >= 300)
+            {
+                code += "-???- + -???- + -START-\n";
+                code += $"-Lv.2 UNLOCK = {pass / 60}:{pass % 60}/7:00-\n";
+            }
+            else
+            {
+                code += $"-Lv.1 UNLOCK = {pass / 60}:{pass % 60}/5:00-\n";
+            }
+        }
+        return code;
     }
 
     private void Refresh()

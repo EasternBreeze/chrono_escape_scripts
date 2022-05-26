@@ -1,7 +1,6 @@
 using ChangeableDatabase;
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -175,7 +174,7 @@ public sealed class IntroAdmin : MonoBehaviour
 
             await Navi(7);
             CountDown(6);
-            await Navi(8); // 300 +60 +60 +300   480
+            await Navi(8);
 
             await CloseCover(spritesCover[2]);
             iSectionUI.sprite = spritesUI[1];

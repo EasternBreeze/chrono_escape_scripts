@@ -3,14 +3,13 @@
  * https://easings.net/ja
  ** ******************************/
 
-using System.Collections;
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Cysharp.Threading.Tasks;
 using UserDatabase;
-using System.Linq;
-using System;
 using Random = UnityEngine.Random;
 
 public enum Scene
@@ -39,21 +38,18 @@ public sealed class SceneChanger : SingletonMonoBehaviour<SceneChanger>
 
     private List<Shutter> shutters = new List<Shutter>();
 
-    protected override void Awake()
+    protected override void Init()
     {
-        if (CheckInstance())
+        transform.position = new Vector2
         {
-            transform.position = new Vector2
-            {
-                x = -640,
-                y = 360
-            };
-            spritesShutterBase = Resources.LoadAll<Sprite>("Graphics/shutter_StandardBase").ToList();
-            spritesShutterBaseGray = Resources.LoadAll<Sprite>("Graphics/shutter_StandardBaseGray").ToList();
-            spritesShutterBaseRed = Resources.LoadAll<Sprite>("Graphics/shutter_StandardBaseRed").ToList();
+            x = -640,
+            y = 360
+        };
+        spritesShutterBase = Resources.LoadAll<Sprite>("Graphics/shutter_StandardBase").ToList();
+        spritesShutterBaseGray = Resources.LoadAll<Sprite>("Graphics/shutter_StandardBaseGray").ToList();
+        spritesShutterBaseRed = Resources.LoadAll<Sprite>("Graphics/shutter_StandardBaseRed").ToList();
 
-            spriteTextReady = Resources.Load<Sprite>("Graphics/text_Ready");
-        }
+        spriteTextReady = Resources.Load<Sprite>("Graphics/text_Ready");
     }
 
     public void SceneChange(Scene targetScene)
@@ -85,7 +81,7 @@ public sealed class SceneChanger : SingletonMonoBehaviour<SceneChanger>
         shutters.ForEach(s => s.In());
         await UniTask.DelayFrame(inDelayframe);
         await UniTask.WaitForEndOfFrame();
-        SceneManager.LoadScene($"{targetScene}");
+        await SceneManager.LoadSceneAsync($"{targetScene}");
     }
 
     public void FadeOut()
@@ -130,7 +126,7 @@ public sealed class SceneChanger : SingletonMonoBehaviour<SceneChanger>
         s.Out();
     }
 
-    private void FadeStandard() // 16 * 9 (80*80)
+    private void FadeStandard()
     {
         {
             List<int> delays = new List<int>();
@@ -199,7 +195,7 @@ public sealed class SceneChanger : SingletonMonoBehaviour<SceneChanger>
         }
     }
 
-    private void FadeFailed() // 16 * 9 (80*80)
+    private void FadeFailed()
     {
         {
             List<int> inDelays = new List<int>();
@@ -279,7 +275,7 @@ public sealed class SceneChanger : SingletonMonoBehaviour<SceneChanger>
         }
     }
 
-    private void FadeOverDrive() // 32 * 18 (40*40)
+    private void FadeOverDrive()
     {
         {
             List<int> inDelays = new List<int>();

@@ -1,5 +1,4 @@
 using ChangeableDatabase;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,6 +46,14 @@ public sealed class CanvasRecord : MonoBehaviour
 
         iNewRecord = g.GetComponent<Image>();
         isUpdate = true;
+    }
+
+    public void HiddenRecordData()
+    {
+        for (int i = 0; i < tRanks.Count; i++)
+        {
+            tRanks[i].text = "---";
+        }
     }
 
     private void Update()
