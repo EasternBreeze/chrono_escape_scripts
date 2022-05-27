@@ -28,7 +28,6 @@ public sealed class MainAdmin : MonoBehaviour
     {
         if (!isUpdate)
         {
-            cursor.CursorUpdate(0);
             return;
         }
 
