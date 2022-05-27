@@ -5,14 +5,12 @@ using UnityEngine;
 public sealed class MainAdmin : MonoBehaviour
 {
     [SerializeField] private FieldAdmin field;
-    private Cursor cursor;
 
     private bool isUpdate;
 
     private async void Start()
     {
         field.GameInit();
-        cursor = field.GetCursor();
 
         await UniTask.DelayFrame(120);
         SceneChanger.Instance.FadeOut();
